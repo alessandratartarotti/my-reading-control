@@ -1,6 +1,7 @@
 var React = require('react'),
 	Bootstrap = require('react-bootstrap'),
 	Book = require('./book.js'),
+	SearchBooks = require('./searchBooks.js'),
 	ReactRouter = require('react-router'),
 	localstorage = require('./util.js'),
 	_ = require('lodash');            
@@ -22,9 +23,21 @@ var ListBooks = React.createClass({
 
 	getInitialState: function() {
 		return {
-			data: this.props.itens
+			data: this.props.itens,
+			queryText: '',
+			queryType: ''
 		} 
 	}, 
+
+	updateBook: function(item) {
+		var index = _.findKey(this.state.data, function(o) { return o.id == item.id; });		
+			var data  = this.state.data;
+			data[index].read = !data[index].read;
+
+			this.setState({
+		      	data: data
+		    }); 
+	},
 
 	deleteBook: function(item) {
 
@@ -52,48 +65,77 @@ var ListBooks = React.createClass({
 		}
 	}, 
 
+	searchBooks(q) {
+		this.setState({
+			queryText: q
+    	}); 
+    }, 
+
+	searchBooksByType(type) {
+		this.setState({
+			queryType: type
+    	}); 
+    }, 
+   
 	render: function() {
+		var queryText = this.state.queryText;
+		var queryType = this.state.queryType;
+		var filteredBooks = [];
+		var myBooks = this.state.data; 
 
-		var filteredBooks = this.state.data;
+		if (this.props.mode == "list"){
 
-  		filteredBooks = filteredBooks.map(function(item, index){
+			myBooks.forEach(function(item) {
+				if(
+					(item.year.toString().toLowerCase().indexOf(queryText)!=-1) ||
+					(!!item.author && item.author.toString().toLowerCase().indexOf(queryText)!=-1) ||
+					(item.title.toLowerCase().indexOf(queryText)!=-1)
+					) {
+					filteredBooks.push(item);
+				}
+			}); 
 
-  			return(
-  				<Book item = { item }
-  						key = { index }
-	  					whichItem = { item }
-	  					onDelete = { this.deleteBook } />
-  			);
-  		}.bind(this));
+			switch (queryType) {
+				case 'all':
+
+				break;
+				case 'missing-read':
+				console.log('missing')
+				filteredBooks = _.filter(filteredBooks, {'read' : false});
+
+				break;
+				case 'already-read':
+				console.log('already')
+				filteredBooks = _.filter(filteredBooks, {'read' : true});
+
+				break;
+			}
+
+		} else {
+			filteredBooks = this.state.data;
+		}
+
+		filteredBooks = filteredBooks.map(function(item, index){
+
+			return(
+				<Book item = { item }
+				mode = {this.props.mode}
+				key = { index }
+				whichItem = { item }
+				onDelete = { this.deleteBook }
+				onUpdate = { this.updateBook }  />
+				);
+		}.bind(this));
 
 		return (
-			<div>
-			
-				{(filteredBooks.length > 0  && this.props.mode == "list")?
-
-				<Navbar>
-					<Navbar.Header>
-						<Navbar.Toggle />
-					</Navbar.Header>
-					<Navbar.Collapse>
-						<Nav bsStyle="pills" activeKey={1} pullLeft>
-							<NavItem>Alread ready</NavItem>
-							<NavItem>Missing read</NavItem>
-							<NavItem>All books</NavItem>
-						</Nav>
-						<Navbar.Form pullRight>
-							<FormGroup>
-								<FormControl type="text" placeholder="Search" />
-							</FormGroup>
-							{' '}
-							<Button type="submit">Submit</Button>
-						</Navbar.Form>
-					</Navbar.Collapse>
-				</Navbar>	: 
-					""
+			<div>			
+				{(this.state.data.length > 0  && this.props.mode == "list")?
+					<SearchBooks 
+						 onSearch = { this.searchBooks }
+						 onSelectionSearch = {this.searchBooksByType } /> :  ""
 				}
 
-				{(filteredBooks.length == 0  && this.props.mode == "list")?
+				{(this.state.data.length == 0  && this.props.mode == "list")?
 					<Alert bsStyle="info" onDismiss={this.handleAlertDismiss}>
 						<h4>Start your control!</h4>
 							<p>
@@ -107,10 +149,8 @@ var ListBooks = React.createClass({
 					""
 				}
 
-				<Grid bsClass="books">
-					
-						{filteredBooks}
-					
+				<Grid bsClass="books">		
+					{filteredBooks}				
 				</Grid>
 			</div>
 

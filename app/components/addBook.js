@@ -59,7 +59,7 @@ var AddBook = React.createClass({
 		    });	
 	},
 
-	getNewBooks: function () {
+	handleBooksSearched: function () {
 
 		var myBooks = localstorage.get('my-books');
 
@@ -70,6 +70,8 @@ var AddBook = React.createClass({
 			searchedBooks = this.state.searchedBooks; 
 
 			searchedBooks = searchedBooks.map(function(item, index){
+
+				//add some properties to identify which book has already been added
 
 				var book = _.filter(myBooks, { 'id': item.key });
 				var read = false;
@@ -105,7 +107,7 @@ var AddBook = React.createClass({
 
 	render: function() {
 
-		var searchedBooks = this.getNewBooks();
+		var searchedBooks = this.handleBooksSearched();
 
 		return (
 			<div>

@@ -11,12 +11,14 @@ var Grid = Bootstrap.Grid,
 	ButtonToolbar = Bootstrap.ButtonToolbar,
 	Glyphicon = Bootstrap.Glyphicon,
 	Media = Bootstrap.Media,
-	Image = Bootstrap.Image;
+	Image = Bootstrap.Image,
+	Label = Bootstrap.Label;
 
 
 var Book = React.createClass({ 
 
 	getInitialState: function() {
+		console.log(this.props.item.read, 'prop inicical')
 		return {
 			read: this.props.item.read,
 			readDate: this.props.item.readDate,
@@ -29,7 +31,7 @@ var Book = React.createClass({
 		this.setState({ add: true})
 	},
 
-	handleAdd: function() {
+	handleAdd: function() {	
 		var tempItem = {
 		      id: this.props.item.id,
 		      coverId: this.props.item.coverId,
@@ -44,6 +46,7 @@ var Book = React.createClass({
 	},
 
 	handleRead: function() {
+		this.props.onUpdate(this.props.whichItem);
 		var allData = localstorage.get('my-books');
 		var index = _.findKey(allData, ['id', this.props.item.id]);
 
@@ -67,12 +70,15 @@ var Book = React.createClass({
 					<Image src={image} heigth="58" width="38" />
 				</Media.Left>
 				<Media.Body>
-				<Media.Heading>{this.props.item.title}</Media.Heading>	
+				<Media.Heading>
+					{this.props.item.title}
+					{this.props.item.read? <span className="label label-success pull-right">Lido</span> : ""}
+				</Media.Heading>	
 					<p>{this.props.item.author}</p>
 					<p>{this.props.item.year}</p>
 
 					{this.state.add}
-					{(this.state.add)?
+					{(this.state.add && this.props.mode == "add")?
 						<p>
 							<Button bsSize="xsmall" title="Add Book" bsStyle="success" onClick={(e) => this.handleAdd(e)}>
 								<Glyphicon glyph="plus" /> Add
@@ -90,7 +96,7 @@ var Book = React.createClass({
 				  			<label className="margin-left-20">
 								<input type="checkbox" 
 								onChange={(e) => this.handleRead(e)} 
-								checked={this.state.read} />
+								checked={this.props.item.read} />
 									Read
 							</label>
 				   		</p>
