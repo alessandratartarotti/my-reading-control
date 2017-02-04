@@ -1,0 +1,19 @@
+
+//$navbar-default-bg: #312312;
+//$light-orange: #ff8c00;
+//$navbar-default-color: $light-orange;
+//variables: http://getbootstrap.com/customize/#less-variables
+
+@import "bootstrap";
+@import "bootstrap/theme";
+
+$line-color: rgba(156, 151, 151, 0.32);
+
+.books .media {
+	border-bottom: 1px $line-color solid;
+}
+
+.margin-left-20 {
+	margin-left:20px;
+}
+
