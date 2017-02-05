@@ -96,18 +96,11 @@ var ListBooks = React.createClass({
 			}); 
 
 			switch (queryType) {
-				case 'all':
-
-				break;
 				case 'missing-read':
-				console.log('missing')
-				filteredBooks = _.filter(filteredBooks, {'read' : false});
-
+					filteredBooks = _.filter(filteredBooks, {'read' : false});
 				break;
 				case 'already-read':
-				console.log('already')
-				filteredBooks = _.filter(filteredBooks, {'read' : true});
-
+					filteredBooks = _.filter(filteredBooks, {'read' : true});
 				break;
 			}
 

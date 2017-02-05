@@ -22,7 +22,7 @@ var SearchBooks = React.createClass({
 
 	getInitialState: function() {
 		return {
-			searchType: ""
+			searchType: "all"
 		} 
 	}, 
 
@@ -54,7 +54,7 @@ var SearchBooks = React.createClass({
 							<NavItem eventKey={'all'}>All books</NavItem>
 						</Nav>
 						<Navbar.Form pullRight>
-							<FormGroup>
+							<FormGroup bsClass="margin-right-20">
 								<FormControl type="text" onChange={ this.handleSearch } placeholder="Search" />
 							</FormGroup>
 							{' '}

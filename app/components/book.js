@@ -18,7 +18,6 @@ var Grid = Bootstrap.Grid,
 var Book = React.createClass({ 
 
 	getInitialState: function() {
-		console.log(this.props.item.read, 'prop inicical')
 		return {
 			read: this.props.item.read,
 			readDate: this.props.item.readDate,
@@ -67,12 +66,12 @@ var Book = React.createClass({
 		return(		
 			<Media>
 				<Media.Left>
-					<Image src={image} heigth="58" width="38" />
+					<img src={image} heigth="58" width="38" />
 				</Media.Left>
 				<Media.Body>
 				<Media.Heading>
 					{this.props.item.title}
-					{this.props.item.read? <span className="label label-success pull-right">Lido</span> : ""}
+					{this.props.item.read? <span className="label label-success pull-right">Read</span> : ""}
 				</Media.Heading>	
 					<p>{this.props.item.author}</p>
 					<p>{this.props.item.year}</p>
