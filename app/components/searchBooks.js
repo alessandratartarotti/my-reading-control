@@ -44,7 +44,7 @@ var SearchBooks = React.createClass({
 					<Navbar.Header>
 						<Navbar.Toggle />
 						<Navbar.Brand>
-							Search
+							Filter
 						</Navbar.Brand>
 					</Navbar.Header>
 					<Navbar.Collapse> 
