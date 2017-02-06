@@ -7,11 +7,7 @@ var gulp = require('gulp'),
   	browserify =  require('browserify'),
   	babelify = require('babelify'),
     bower = require('gulp-bower'),
-    //sourcemaps = require('gulp-sourcemaps'),
-    //watchify = require('watchify'),
     source = require('vinyl-source-stream');
-    //buffer = require('vinyl-buffer'),
-    //assign = require('lodash.assign');
 
 var sassSources = ['./app/style/*.scss'];
 var htmlSources = ['./public/*.html'];
@@ -22,7 +18,6 @@ var bootstrapDir = './bower_components/bootstrap-sass';
 gulp.task('bower', function() {
   return bower();
 });
-
 
 gulp.task('sass', ['bower'] ,function() {
     return gulp.src(sassSources)
